@@ -3,9 +3,9 @@
 import { StructureSyncProtocol } from '../core/protocol.js';
 import type { WakuIntegrationConfig, StructureDefinition } from '../types.js';
 
-const globalProtocol = new StructureSyncProtocol();
+export const globalProtocol = new StructureSyncProtocol();
 // A simple, in-memory cache on the server. In a real app, this might be a Redis/etc.
-const serverStructureCache = new Map<string, StructureDefinition>();
+export const serverStructureCache = new Map<string, StructureDefinition>();
 
 export function createRSEasyServerIntegration(config: WakuIntegrationConfig = {}) {
   return {

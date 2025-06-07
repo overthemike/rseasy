@@ -12,10 +12,11 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-server-dom-webpack": "19.0.0",
-    "waku": "^0.20.2",
     "rseasy": "file:..",
     "structure-id": "^1.0.0",
-    "valtio-plugin": "^1.0.0"
+    "valtio": "^2.1.5",
+    "valtio-plugin": "^1.0.0",
+    "waku": "^0.20.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

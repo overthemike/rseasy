@@ -3,7 +3,7 @@
 import { StructureSyncProtocol } from '../core/protocol.js';
 import type { ClientRegistry, StructurePacket, StructureDefinition } from '../types.js';
 
-class RSEasyClient {
+export class RSEasyClient {
   private protocol = new StructureSyncProtocol();
   private registry: ClientRegistry = {
     structures: new Map(),
