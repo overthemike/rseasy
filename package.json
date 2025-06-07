@@ -1,0 +1,43 @@
+{
+  "name": "rseasy",
+  "version": "0.1.0",
+  "description": "Structure-aware RSC transfer protocol for Waku",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "example": "cd example && npm run dev"
+  },
+  "keywords": [
+    "react",
+    "server-components",
+    "rsc",
+    "waku",
+    "optimization",
+    "transfer-protocol"
+  ],
+  "author": "Mike",
+  "license": "MIT",
+  "dependencies": {
+    "valtio": "^2.0.0",
+    "structure-id": "^1.0.0",
+    "valtio-plugin": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "waku": "^0.20.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0",
+    "waku": "^0.20.0"
+  }
+}
