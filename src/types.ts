@@ -10,12 +10,12 @@ export interface AccessPattern {
   timestamp: number;
 }
 
+// The packet is now always 'values-only' or a differential update.
 export interface StructurePacket {
-  type: 'full' | 'values-only' | 'differential';
+  type: 'values-only' | 'differential';
   structureId: string;
-  structure?: StructureDefinition;
-  values: unknown;
-  paths?: string[];
+  values: unknown; // Can be a full values-array or a partial object
+  paths?: string[]; // For differential updates
   metadata?: {
     collisionCount: number;
     levels: number;
@@ -25,17 +25,21 @@ export interface StructurePacket {
 
 export interface StructureDefinition {
   shape: Record<string, unknown>;
-  signature: string;
+  // The structureId is the unique signature
+  id: string;
 }
 
+// This context is now primarily for the client to tell the server what it knows.
 export interface EncodeContext {
-  knownStructures?: string[];
+  knownStructureId: string; // Client sends the ID it expects
   requestId?: string;
 }
 
 export interface ClientRegistry {
   structures: Map<string, StructureDefinition>;
   patterns: Map<string, AccessPattern[]>;
+  // Cache to map a request identifier (like a URL) to a structure ID
+  requestToStructureId: Map<string, string>;
 }
 
 export interface WakuIntegrationConfig {
@@ -43,20 +47,4 @@ export interface WakuIntegrationConfig {
   fallbackOnError?: boolean;
   maxStructureCacheSize?: number;
   enablePatternLearning?: boolean;
-}
-
-export interface RSEasyRenderContext {
-  requestId: string;
-  knownStructures: Set<string>;
-  accessPatterns: Map<string, AccessPattern>;
-  trackedObjects: WeakMap<object, string>;
-}
-
-export interface EnhancedRSCResponse {
-  stream: ReadableStream;
-  structureMetadata?: {
-    newStructures: StructureDefinition[];
-    usedStructures: string[];
-    optimizationHints: string[];
-  };
 }

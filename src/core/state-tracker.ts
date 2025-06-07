@@ -1,5 +1,4 @@
 import { proxy, type ValtioPlugin } from '../valtio-plugin.js';
-import { generateStructureId, getStructureInfo } from '../structure-id.js';
 import type { AccessPattern } from '../types.js';
 
 export class StateTracker {
@@ -15,7 +14,7 @@ export class StateTracker {
       id: `access-tracker-${requestId}`,
       name: 'AccessTracker',
       
-      onGet: (path, value) => {
+      onGet: (path) => {
         this.accessedPaths.add(path.join('.'));
       },
       

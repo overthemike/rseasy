@@ -1,48 +1,42 @@
+// core/request-context.ts
+
 import { StateTracker } from './state-tracker.js';
-import { StructureSyncProtocol } from './protocol.js';
-import type { StructurePacket, EncodeContext } from '../types.js';
+import type { AccessPattern } from '../types.js';
 
 export class RequestContext {
-  private protocol: StructureSyncProtocol;
   private trackedStates = new Set<object>();
   private stateTracker: StateTracker;
   private requestId: string;
   
-  constructor(protocol: StructureSyncProtocol, requestId?: string) {
-    this.protocol = protocol;
+  constructor(requestId?: string) {
     this.requestId = requestId || `req-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     this.stateTracker = new StateTracker(this.requestId);
   }
   
+  /**
+   * Wraps an object in a proxy to track its usage.
+   */
   createState<T extends object>(initialData: T): T {
     const tracked = this.stateTracker.createTrackedState(initialData);
     this.trackedStates.add(tracked);
-    this.protocol.registerTrackedState(tracked, this.stateTracker);
+    // The protocol no longer needs to be notified here.
     return tracked;
   }
   
-  encode(data: unknown, knownStructures?: string[]): StructurePacket {
-    const context: EncodeContext = {
-      knownStructures,
-      requestId: this.requestId
-    };
-    return this.protocol.encode(data, context);
-  }
-  
-  getKnownStructures(): string[] {
-    return this.protocol.getKnownStructures();
-  }
-  
-  getAccessPattern() {
+  /**
+   * Gets the combined access pattern for all tracked states in this context.
+   */
+  getAccessPattern(): AccessPattern {
     return this.stateTracker.getAccessPattern();
   }
   
+  /**
+   * Cleans up the state tracker for this request.
+   */
   dispose(): void {
-    for (const state of this.trackedStates) {
-      this.protocol.releaseTracker(state);
-    }
-    this.trackedStates.clear();
+    // The only thing to dispose is the tracker itself.
     this.stateTracker.dispose();
+    this.trackedStates.clear();
   }
   
   getRequestId(): string {
